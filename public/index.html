@@ -4,24 +4,47 @@
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Web site created using create-snowpack-app" />
+    <meta
+      name="description"
+      content="Web site created using create-snowpack-app"
+    />
     <link rel="stylesheet" type="text/css" href="/index.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.rawgit.com/filipelinhares/ress/master/dist/ress.min.css"
+    />
     <title>Snowpack App</title>
+    <style>
+    body {
+      text-align: center;
+    }
+    button{
+      width: 200px;
+      height: 40px;
+      background-color: rgba(0,0,0, 0.1);
+    }
+
+    #stageWrap {
+      padding: 30px;
+    }
+
+    #stage {
+      display: inline-block;
+      width: 15cm;
+      height: 15cm;
+      background-color: rgba(0,0,0, 0.1);
+    }
+
+    </style>
   </head>
   <body>
-    <img id="img" src="/logo.svg" />
-    <canvas id="canvas"></canvas>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="stageWrap">
+      <div id="stage"></div>
+    </div>
+    <button data-save>
+      Save
+    </button>
     <script type="module" src="/_dist_/index.js"></script>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>
