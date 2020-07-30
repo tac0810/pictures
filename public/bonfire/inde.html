@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.rawgit.com/filipelinhares/ress/master/dist/ress.min.css"
+    />
+    <title>Bonfire</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      button {
+        width: 200px;
+        height: 40px;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      #stageWrap {
+        padding: 30px;
+      }
+
+      #stage {
+        display: inline-block;
+        width: 15cm;
+        height: 15cm;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stageWrap">
+      <div id="stage"></div>
+    </div>
+    <button data-save>
+      Save
+    </button>
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>

@@ -1,43 +1,20 @@
+import { saveCanvas, calcNormal, r2, r3 } from '../utils.js';
 import {
-  ConeGeometry,
   Mesh,
   MeshBasicMaterial,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
-  AxesHelper,
-  GridHelper,
   AdditiveBlending,
   Vector3,
-  Vector2,
-  TetrahedronBufferGeometry,
   CircleGeometry,
   CylinderGeometry,
-  MultiplyBlending,
   RawShaderMaterial,
   PlaneBufferGeometry,
-} from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-
-function calcNormal() {
-  var r1 = Math.random();
-  var r2 = Math.random();
-  var value = Math.sqrt(-2.0 * Math.log(r1)) * Math.sin(2.0 * Math.PI * r2);
-  value = (value + 3) / 6;
-  return value;
-}
-
-function r3() {
-  return Math.random() * Math.random() * Math.random();
-}
-
-function r2() {
-  return Math.random() * Math.random();
-}
+} from '../three.module.js';
 
 const stage = document.querySelector('#stage');
 const { width, height } = stage.getBoundingClientRect();
-
 const scene = new Scene();
 const camera = new PerspectiveCamera(75, 1, 0.01, 1000);
 const renderer = new WebGLRenderer({
@@ -45,26 +22,22 @@ const renderer = new WebGLRenderer({
   alpha: true,
   preserveDrawingBuffer: true,
 });
+
 camera.position.set(0, 0, 5);
 renderer.setSize(width, height);
 renderer.setPixelRatio(6);
-const a = '#00101c';
 renderer.setClearColor(0x00101c);
 document.querySelector('#stage').appendChild(renderer.domElement);
 
-function firebase() {
+function bonfire() {
   const spread = 1.0;
   const pow = 0.75;
   const spreadRatio = new Vector3(5, 8, 4);
-  // const geometry = new TetrahedronBufferGeometry(1, 0);
-  const geometry = new CircleGeometry(1 , 0);
-
+  const geometry = new CircleGeometry(1, 0);
 
   for (let i = 0; i < 500; i++) {
-
     const material = new MeshBasicMaterial({
       color: 0xff3300,
-      // wireframe: true,
       transparent: true,
       opacity: r3() + 0.075,
       blending: AdditiveBlending,
@@ -72,21 +45,16 @@ function firebase() {
 
     const cone = new Mesh(geometry, material);
 
-    // cone.rotation.y = r3() * Math.PI;
-    // cone.rotation.x = r3() * Math.PI;
-    // cone.rotation.x = r3() * Math.PI;
-
-    cone.rotation.z = -0.5;
-
+    cone.rotation.set(0, 0, -0.5);
     cone.position.setY(spreadRatio.y * r2());
 
     const volume = Math.pow(1 - cone.position.y / spreadRatio.y, 2);
     const invertVolume = 1.0 - volume;
     const theta = (Math.random() * 2 - 1) * Math.PI;
-
     const x = spreadRatio.x * Math.cos(theta) * r3();
     const z = spreadRatio.z * Math.sin(theta) * r3();
     const wind = ((invertVolume ** 2 * 0.5) / volume) * 6 * calcNormal();
+
     cone.position.setX(x - wind - invertVolume ** volume);
     cone.position.setZ(z);
     cone.position.setY(cone.position.y + invertVolume * 4);
@@ -106,13 +74,10 @@ function firebase() {
   }
 }
 function reflection() {
-  const spread = 1.3;
-  const pow = 0.7;
   const spreadRatio = new Vector3(4, 4, 1);
   const geometry = new CircleGeometry(0.5, 0);
   const material = new MeshBasicMaterial({
     color: 0xff3300,
-    // wireframe: true,
     transparent: true,
     opacity: 0.01,
     blending: AdditiveBlending,
@@ -133,17 +98,11 @@ function reflection() {
   }
 }
 function firewood() {
-  const a = '#0c0202';
   const geometry = new CylinderGeometry(0.1, 0.1, 1.7, 3);
   const material = new MeshBasicMaterial({
     color: 0x0c0202,
-    // color: 0xffffff,
-    // wireframe: true,
     transparent: true,
-    // opacity: 0.75,
-    // depthTest: false,
     depthWrite: false,
-    // blending: AdditiveBlending,
   });
 
   const radius = 1.1;
@@ -204,15 +163,10 @@ void main() {
   scene.add(mesh);
 }
 function smoke() {
-  const spread = 1;
-  const pow = 1;
   const spreadRatio = new Vector3(3, 6, 1);
   const geometry = new CircleGeometry(0.5, 0);
-  const a = '#cacaca';
   const material = new MeshBasicMaterial({
-    // color: 0xff3300,
     color: 0xcacaca,
-    // wireframe: true,
     transparent: true,
     opacity: 0.02,
     depthTest: false,
@@ -231,43 +185,22 @@ function smoke() {
     const theta = (Math.random() * 2 - 1) * Math.PI;
     const x = spreadRatio.x * Math.cos(theta) * r3();
 
-    circle.rotation.z = -0.5;
+    circle.rotation.set(0, 0, -0.5);
 
     circle.position.setX(x - (wind - invertVolume ** volume) * 0.125);
     circle.translateX(1);
     circle.translateY(-2);
     circle.translateZ(-2);
-
-    // const v2 = new Vector2(
-    //   circle.position.x / spreadRatio.x,
-    //   circle.position.y / spreadRatio.y,
-    // );
-    // circle.scale.setScalar(
-    //   // (spread / (spread + v2.length() ** 2 * 60)) * pow * volume,
-    //   1+ v2.length() * pow * volume,
-    // );
     scene.add(circle);
   }
 }
 
-firebase();
+bonfire();
 reflection();
 firewood();
 glow();
 smoke();
 
 renderer.render(scene, camera);
-
-//
-function saveCanvas() {
-  const canvas = document.querySelector('canvas');
-
-  const base64 = canvas.toDataURL('image/png');
-
-  const a = document.createElement('a');
-  a.href = base64;
-  a.download = `${new Date().toString()}.png`;
-  a.click();
-}
 
 document.querySelector('[data-save]').addEventListener('click', saveCanvas);
